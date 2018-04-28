@@ -1,2 +1,2 @@
-# common-inf
-Infrastructure as code common to all projects
+# common-roles
+Infrastructure as code roles that are common to all projects
