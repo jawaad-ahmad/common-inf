@@ -1,0 +1,4 @@
+---
+
+- name: Hello world (from basic-tasks)
+  command: echo Hello from basic-tasks
