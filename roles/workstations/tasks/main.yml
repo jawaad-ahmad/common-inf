@@ -1,4 +1,9 @@
 ---
 
-- name: Hello world (from basic-tasks)
-  command: echo Hello from basic-tasks
+# List received from tasksel:
+#
+#    # tasksel --list-tasks
+#    # tasksel --task-packages gnome-desktop
+
+- include: ../../common/tasks/pkg-install.yml package=task-gnome-desktop
+

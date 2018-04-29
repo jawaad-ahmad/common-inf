@@ -1,0 +1,5 @@
+---
+
+- name: Install {{ package }} package
+  action: "{{ ansible_pkg_mgr }} name={{ package }} state=present"
+  become: yes
