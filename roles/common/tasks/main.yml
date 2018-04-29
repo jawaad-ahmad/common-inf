@@ -1,0 +1,54 @@
+---
+
+# TODO The initial ansible user's home directory is set as 0755. Need
+# this changed to 0700 somewhere.
+
+- include: setup-apt-sources-list.yml component=main
+- include: setup-apt-sources-list.yml component=non-free
+- include: setup-apt-sources-list.yml component=contrib
+
+- name: Verify cdrom line disabled in /etc/apt/sources.list
+  command: grep -q '^[^#].*cdrom' /etc/apt/sources.list
+  register: command_result
+  failed_when: command_result.rc == 0
+
+- name: Run apt-get update
+  apt:
+     update_cache: yes
+  become: yes
+
+- include: pkg-install.yml package=bzip2
+- include: pkg-install.yml package=less
+- include: pkg-install.yml package=lsb-release
+- include: pkg-install.yml package=net-tools
+- include: pkg-install.yml package=ntp
+- include: pkg-install.yml package=openssh-server
+- include: pkg-install.yml package=python
+- include: pkg-install.yml package=sshfs
+- include: pkg-install.yml package=sudo
+- include: pkg-install.yml package=unzip
+- include: pkg-install.yml package=vim
+
+- name: Install adduser.conf
+  template: src=etc/adduser.conf.j2 dest=/etc/adduser.conf owner=root group=root mode=0644
+  become: yes
+
+- name: Install inittab
+  template: src=etc/inittab.j2 dest=/etc/inittab owner=root group=root mode=0644
+  become: yes
+
+- include: setup-skel.yml dest=/etc/skel
+- include: setup-skel.yml dest=/root
+
+- name: Install openssh-server ssh_config
+  template: src=etc/ssh/ssh_config.j2 dest=/etc/ssh/ssh_config owner=root group=root mode=0644
+  become: yes
+
+- name: Install openssh-server sshd_config
+  template: src=etc/ssh/sshd_config.j2 dest=/etc/ssh/sshd_config owner=root group=root mode=0644
+  become: yes
+
+- name: Add user accounts
+  include: create-user.yml
+  with_dict: "{{ users }}"
+

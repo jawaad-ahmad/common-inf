@@ -1,0 +1,30 @@
+---
+
+- name: set shell if {{ item.key }} is not a system user
+  set_fact: shell="/bin/bash"
+  when: not item.value.system
+
+- name: skip setting shell if {{ item.key }} is a system user
+  set_fact: shell=""
+  when: item.value.system
+
+- name: Create group for user {{ item.key }}
+  group:
+     name:   "{{ item.key }}"
+     gid:    "{{ item.value.uid }}"
+     state:  present
+     system: "{{ item.value.system }}"
+  become: yes
+
+- name: Create user {{ item.key }}
+  user:
+     name:       "{{ item.key }}"
+     comment:    "{{ item.value.gecos }}"
+     createhome: no
+     group:      "{{ item.key }}"
+     shell:      "{{ shell }}"
+     state:      present
+     system:     "{{ item.value.system }}"
+     uid:        "{{ item.value.uid }}"
+     # TODO??? set password
+  become: yes

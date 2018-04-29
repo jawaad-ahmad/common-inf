@@ -1,0 +1,24 @@
+---
+
+- name: Install .bash_aliases into {{ dest }}
+  template: src=etc/skel/dot.bash_aliases.j2 dest={{ dest }}/.bash_aliases owner=root group=root mode=0644
+  become: yes
+
+- name: Check .bash_history in {{ dest }}
+  stat: path={{ dest }}/.bash_history
+  register: bash_history
+  become: yes
+
+- name: Remove any existing .bash_history in {{ dest }}
+  file: path={{ dest }}/.bash_history state=absent
+  when: bash_history.stat.isreg is defined and bash_history.stat.isreg
+  become: yes
+
+- name: Install .bash_history into {{ dest }}
+  file: src=/dev/null dest={{ dest }}/.bash_history owner=root group=root state=link
+  become: yes
+
+- name: Install .bashrc into {{ dest }}
+  template: src=etc/skel/dot.bashrc.j2 dest={{ dest }}/.bashrc owner=root group=root mode=0644
+  become: yes
+

@@ -1,0 +1,6 @@
+---
+
+- name: Install /etc/apt/sources.list.d/debian-{{ component }}.list
+  template: src=etc/apt/sources.list.d/debian-component.list.j2 dest=/etc/apt/sources.list.d/debian-{{ component }}.list owner=root group=root mode=0644
+  become: yes
+
