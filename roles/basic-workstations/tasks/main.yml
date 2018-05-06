@@ -5,5 +5,6 @@
 #    # tasksel --list-tasks
 #    # tasksel --task-packages gnome-desktop
 
-- include: ../../common/tasks/pkg-install.yml package=task-gnome-desktop
+# TODO turn this on later--it works fine, but it takes a long time to install; might be preferable to modify README.md to check this box during the initial install since the packages will be available locally on the install CD
+#- include: ../../common/tasks/pkg-install.yml package=task-gnome-desktop
 
