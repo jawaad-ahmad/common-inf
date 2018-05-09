@@ -1,18 +1,5 @@
 ---
 
-# TODO The initial ansible user's home directory is set as 0755. Need
-# this changed to 0700 somewhere.
-
-# TODO split from common: move to dedicated package manager setup role?
-- include: setup-apt-sources-list.yml component=main
-- include: setup-apt-sources-list.yml component=non-free
-- include: setup-apt-sources-list.yml component=contrib
-
-- name: Verify cdrom line disabled in /etc/apt/sources.list
-  command: grep -q '^[^#].*cdrom' /etc/apt/sources.list
-  register: command_result
-  failed_when: command_result.rc == 0
-
 # TODO split from common: move to dedicated initial package installation role?
 - name: Run apt-get update
   apt:
