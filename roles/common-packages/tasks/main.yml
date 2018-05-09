@@ -1,6 +1,5 @@
 ---
 
-# TODO split from common: move to dedicated initial package installation role?
 - include: pkg-install.yml package=bzip2
 - include: pkg-install.yml package=less
 - include: pkg-install.yml package=lsb-release
@@ -21,9 +20,4 @@
 - include: pkg-install.yml package=sudo
 - include: pkg-install.yml package=unzip
 - include: pkg-install.yml package=vim
-
-# TODO split from common: move to workstations or basic-workstations role? -- this is for disabling Ctrl+Alt+Del in GUI - except it's probably not just for workstations
-- name: Install inittab
-  template: src=etc/inittab.j2 dest=/etc/inittab owner=root group=root mode=0644
-  become: yes
 
