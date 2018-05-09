@@ -1,11 +1,6 @@
 ---
 
 # TODO split from common: move to dedicated initial package installation role?
-- name: Run apt-get update
-  apt:
-     update_cache: yes
-  become: yes
-
 - include: pkg-install.yml package=bzip2
 - include: pkg-install.yml package=less
 - include: pkg-install.yml package=lsb-release
@@ -31,17 +26,4 @@
 - name: Install inittab
   template: src=etc/inittab.j2 dest=/etc/inittab owner=root group=root mode=0644
   become: yes
-
-# TODO split from common: move to dedicated adduser setup role?
-- name: Install adduser.conf
-  template: src=etc/adduser.conf.j2 dest=/etc/adduser.conf owner=root group=root mode=0644
-  become: yes
-
-- include: setup-skel.yml dest=/etc/skel
-- include: setup-skel.yml dest=/root
-
-# Add users after setting up /etc/skel and /etc/adduser.conf above
-- name: Add user accounts
-  include: create-user.yml
-  with_dict: "{{ users }}"
 

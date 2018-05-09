@@ -1,0 +1,17 @@
+---
+
+# TODO The initial ansible user's home directory is set as 0755. Need
+# this changed to 0700 somewhere.
+
+- name: Install adduser.conf
+  template: src=etc/adduser.conf.j2 dest=/etc/adduser.conf owner=root group=root mode=0644
+  become: yes
+
+- include: setup-skel.yml dest=/etc/skel
+- include: setup-skel.yml dest=/root
+
+# Add users after setting up /etc/skel and /etc/adduser.conf above
+- name: Add user accounts
+  include: create-user.yml
+  with_dict: "{{ users }}"
+
