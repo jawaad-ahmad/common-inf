@@ -152,7 +152,8 @@ ZERO_FREE_SPACE="${PROGPATH}/zero-free-space.sh"
    # Step 11
    #---
 
-   ${ZERO_FREE_SPACE}
+   pin="13579"
+   ${ZERO_FREE_SPACE} ${pin}
 
 #   # After finishing these last steps, use a trick depending on the kind of image being created:
 #   #    For VMware, use vMotion to re-thin the VM; or clone the image into a new VM, with the destination set as thin provisioning.. When doing this, all the contiguous zeros will be converted into nothing.

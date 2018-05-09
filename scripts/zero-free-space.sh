@@ -13,6 +13,7 @@ SYNC=/bin/sync
 
 PROG="$(${BASENAME} ${0})"
 
+BLOCK_SIZE=1K
 PIN="13579"
 
 # This script fills up this much of each filesystem; for a template, we can up
@@ -77,7 +78,6 @@ END_OF_FILE
 #       called zf
 #       o  Interestingly enough it used to use mktemp but with a static file name it was easier to have our monitoring system detect the file and not alarm on the transient disk full condition, until that file was more than 30 minutes since last access. A better way might be to write the name of the file to a temp file it tests for, but it was easy enough to do it this other way.
 #    o  you shouldn't need to call sync or sleep before removing the LV (although it doesn’t hurt). This is because sync flushes the file system buffers, but because you’re writing directly to a block device and not the file system, it doesn’t do anything. But you probably should add a sync after you do the DD to the file system, as it’s possible (although unlikely with a sufficiently large file) that the output to the ‘zf’ file won’t be make it to the block device! Alternatively, you can use the dd “conf=fdatasync” argument to imply this.
-#    o  set the DD block size explicitly – the default is 512 bytes – and this may take a long time to write if you have a large block device or file system.
 
 ## Determine the version of RHEL
 #cond=$(${GREP} -i Taroon /etc/redhat-release)
@@ -90,18 +90,24 @@ END_OF_FILE
       fs=`${GREP} 'ext[234]' /etc/mtab | ${AWK} -F" " '{ print $2 }'`
 
       for i in $fs; do
-         number=$(${DF} -B 512 $i | \
-                     ${AWK} -F" " '{ print $3 }' | \
-                     ${GREP} -v Used)
-         count=$(echo "scale=0; ${number} * ${THRESHOLD_PERCENT} / 100" | ${BC})
+         count=$(${DF} -B ${BLOCK_SIZE} $i | \
+                     ${AWK} --field-separator ' ' \
+                            --assign threshold="${THRESHOLD_PERCENT}" \
+                            'FNR == 2 {
+                        total = $2;
+                        used  = $3;
+                        avail = $4;
 
-         echo "Processing filesystem ${i} (${number} used, ${count} count)"
+                        printf("%1.0f", ((used + avail) * (threshold / 100.0) - used));
+                     }')
+
+         echo "Processing filesystem ${i} (${count} blocks being zeroed)"
 
          outfileBase="${i}/zf"
-         count=0
+         j=0
 
          while [ 1 ]; do
-            outFile="${outfileBase}${count}"
+            outFile="${outfileBase}${j}"
             echo "Determining file name for writing. Checking ${outFile}..."
 
             if [ \! -e "${outFile}" ]; then
@@ -109,22 +115,22 @@ END_OF_FILE
                break
             fi
 
-            count=$(${EXPR} ${count} + 1)
+            j=$(${EXPR} ${j} + 1)
          done
 
          if [ ${dryRun} -eq 0 ]; then
             echo "Writing ${count} blocks to ${outFile}"
-#            ${DD} count=${count} if=/dev/zero of=${outFile}
-#            ${SYNC}
+            ${DD} bs=${BLOCK_SIZE} count=${count} if=/dev/zero of=${outFile}
+            ${SYNC}
          else
             echo "Would write ${count} blocks to ${outFile}"
          fi
 
-#         ${SLEEP} 15
+         ${SLEEP} 15
 
          if [ ${dryRun} -eq 0 ]; then
             echo "Removing ${outFile}"
-#            ${RM} -f ${outFile}
+            ${RM} -f ${outFile}
          else
             echo "Would remove ${outFile}"
          fi
