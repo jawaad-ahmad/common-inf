@@ -1,0 +1,15 @@
+#!/bin/sh
+
+AWK=/usr/bin/awk
+GREP=/bin/grep
+IFCONFIG=/sbin/ifconfig
+SORT=/usr/bin/sort
+
+${IFCONFIG}                  | \
+   ${GREP} "inet addr"       | \
+   ${GREP} -v "127.0.0.1"    | \
+   ${AWK} '{ print $2 }'     | \
+   ${AWK} -F: '{ print $2 }' |
+   ${SORT}
+
+exit 0
