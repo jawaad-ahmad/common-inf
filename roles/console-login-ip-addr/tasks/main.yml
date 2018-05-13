@@ -4,14 +4,16 @@
 #
 #    http://offbytwo.com/2008/05/09/show-ip-address-of-vm-as-console-pre-login-message.html
 
+# TODO This isn't working yet; need to investigate.
+
 - name: Install /etc/issue-standard
   template: src=etc/issue-standard.j2 dest=/etc/issue-standard owner=root group=root mode=0644
   become: yes
 
 - name: Install /usr/local/bin/get-ip-address.sh
-  template: src=usr/local/bin/get-ip-address.sh.j2 dest=/usr/local/bin/get-ip-address.sh owner=root group=root mode=0644
+  template: src=usr/local/bin/get-ip-address.sh.j2 dest=/usr/local/bin/get-ip-address.sh owner=root group=root mode=0755
   become: yes
 
 - name: Install /etc/network/if-up.d/show-ip-address.sh
-  template: src=etc/network/if-up.d/show-ip-address.sh.j2 dest=/etc/network/if-up.d/show-ip-address.sh owner=root group=root mode=0644
+  template: src=etc/network/if-up.d/show-ip-address.sh.j2 dest=/etc/network/if-up.d/show-ip-address.sh owner=root group=root mode=0755
   become: yes
