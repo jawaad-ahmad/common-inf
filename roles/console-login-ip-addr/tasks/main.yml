@@ -4,8 +4,6 @@
 #
 #    http://offbytwo.com/2008/05/09/show-ip-address-of-vm-as-console-pre-login-message.html
 
-# TODO This isn't working yet; need to investigate.
-
 - name: Install /etc/issue-standard
   template: src=etc/issue-standard.j2 dest=/etc/issue-standard owner=root group=root mode=0644
   become: yes
@@ -14,6 +12,8 @@
   template: src=usr/local/bin/get-ip-address.sh.j2 dest=/usr/local/bin/get-ip-address.sh owner=root group=root mode=0755
   become: yes
 
-- name: Install /etc/network/if-up.d/show-ip-address.sh
-  template: src=etc/network/if-up.d/show-ip-address.sh.j2 dest=/etc/network/if-up.d/show-ip-address.sh owner=root group=root mode=0755
+# The following must not have a .sh extension; that refuses to work for some
+# reason. (Reference: https://askubuntu.com/a/406142/248385)
+- name: Install /etc/network/if-up.d/show-ip-address
+  template: src=etc/network/if-up.d/show-ip-address.sh.j2 dest=/etc/network/if-up.d/show-ip-address owner=root group=root mode=0755
   become: yes
