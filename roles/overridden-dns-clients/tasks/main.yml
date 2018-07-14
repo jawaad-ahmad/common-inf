@@ -1,0 +1,43 @@
+---
+
+# Reference:
+#
+#    https://wiki.debian.org/resolv.conf
+
+- name: Install /etc/NetworkManager/conf.d/resolv.conf
+  template:
+     src:   etc/NetworkManager/conf.d/resolv.conf.j2
+     dest: /etc/NetworkManager/conf.d/resolv.conf
+     owner: root
+     group: root
+     mode:  0644
+  become: yes
+
+- name: Install /etc/NetworkManager/dispatcher.d/pre-up.d/resolv_conf_cloudfare_dns
+  template:
+     src:   etc/NetworkManager/dispatcher.d/pre-up.d/resolv_conf_cloudfare_dns.j2
+     dest: /etc/NetworkManager/dispatcher.d/pre-up.d/resolv_conf_cloudfare_dns
+     owner: root
+     group: root
+     mode:  0755
+  become: yes
+
+# TODO - Get this working
+#- name: Verify DNS set correctly
+#  shell: nmcli dev show | grep DNS | awk '{ print $2; }'
+#  register: dns_servers
+#  tags: debug
+#
+#- name: TODO 1
+#  debug: var=dns_servers.stdout
+#  tags: debug
+#
+#- name: TODO 2
+#  debug: var="Hello found!"
+#  when: dns_servers.stdout.find('192.168.1.1') != "-1"
+#  tags: debug
+#
+#- name: TODO 3
+#  debug: var="Hello not found!"
+#  when: dns_servers.stdout.find('1.1.1.1') != "-1"
+#  tags: debug
