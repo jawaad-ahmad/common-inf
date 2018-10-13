@@ -4,6 +4,8 @@
 #
 #    https://wiki.debian.org/resolv.conf
 
+- include: common-inf/roles/common-packages/tasks/pkg-install.yml package=network-manager
+
 - name: Install /etc/NetworkManager/conf.d/resolv.conf
   template:
      src:   etc/NetworkManager/conf.d/resolv.conf.j2
