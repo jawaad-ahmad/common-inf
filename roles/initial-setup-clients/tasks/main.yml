@@ -1,0 +1,26 @@
+---
+
+# Install one-time init scripts. Set to mode 444 so they can't be accidentally
+# executed.
+
+- name: Create /root/scripts directory
+  file: path=/root/scripts state=directory owner=root group=root mode=0700
+  become: yes
+
+- name: Create /root/scripts/initial-setup.d directory
+  file: path=/root/scripts/initial-setup.d state=directory owner=root group=root mode=0700
+  become: yes
+
+- name: Install /root/scripts/initial-setup.sh
+  template: src=root/scripts/initial-setup.sh.j2 dest=/root/scripts/initial-setup.sh owner=root group=root mode=0444
+  become: yes
+
+- name: Install /root/scripts/initial-setup.d/00_expirePasswords.sh
+  template: src=root/scripts/initial-setup.d/00_expirePasswords.sh.j2 dest=/root/scripts/initial-setup.d/00_expirePasswords.sh owner=root group=root mode=0444
+  become: yes
+
+# Don't do this. It will create the lock file each time the playbook is run
+# creating the potential to re-run the init script. Let this be manual.
+#- name: Install lock file to run initial-setup.sh
+#  file: src=/dev/null dest=/root/scripts/initial-setup.sh.lock owner=root group=root state=link
+#  become: yes
