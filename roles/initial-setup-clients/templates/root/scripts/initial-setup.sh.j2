@@ -6,6 +6,7 @@ DIRNAME=/usr/bin/dirname
 
 CAT=/bin/cat
 ECHO=/bin/echo
+LN=/bin/ln
 RM=/bin/rm
 SH=/bin/sh
 
@@ -149,31 +150,42 @@ runFin() {
       logT 'Ready to begin for {{ ansible_host }}.'
 
       for f in ${D_DIR}/*; do
-         logT "Processing candidate script ${f}"
-
          echo "${f}" | grep -q '^.*\.sh$'
 
          if [ ${?} -eq 0 ]; then
+            logT "Processing candidate script ${f}"
 
-            bf=$(${BASENAME} ${0})
+            bf=$(${BASENAME} ${f})
+            f_ran_lock_file=${f}.completed
 
             main() {
                logE "${bf}: main not defined"
             }
 
-            logD "Loading and running main from ${f}"
-            . ${f}
+            if [ \! -L ${f_ran_lock_file} ]; then
+               logD "${bf}: Loading and running main"
+               . ${f}
 
-            main
+               main
 
-            if [ ${?} -gt 0 ]; then
-               logE 'main failed. Cleaning up and exiting.'
-               exitCode=${EXIT_MAIN_FAILED}
+               if [ ${?} -eq 0 ]; then
+                  logT "${bf}: main passed"
+
+                  ${LN} -s /dev/null ${f_ran_lock_file}
+               else
+                  logE "${bf}: main failed. Cleaning up and exiting."
+                  exitCode=${EXIT_MAIN_FAILED}
+               fi
+            else
+               logT "${bf}: Skipping - previously completed successfully"
             fi
+         else
+            logT "Ignoring file ${f}"
          fi
       done
 
-   logT "Running fin"
+      logT "Running fin"
+
       runFin
 
       if [ ${?} -gt 0 ]; then
