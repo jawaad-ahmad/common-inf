@@ -32,7 +32,13 @@ StrictModes yes
 
 RSAAuthentication yes
 PubkeyAuthentication yes
-#AuthorizedKeysFile	%h/.ssh/authorized_keys
+
+# Enabling AuthorizedKeysFile to prohibit individual users from having their
+# own authorized_keys file, preventing users from adding/changing their
+# respective ssh-keys and also preventing an intruder from adding their own key.
+# Reference: http://blog.appliedinformaticsinc.com/how-to-manage-ssh-keys-using-ansible/
+#AuthorizedKeysFile     %h/.ssh/authorized_keys
+AuthorizedKeysFile      /etc/ssh/authorized_keys/%u
 
 # Don't read the user's ~/.rhosts and ~/.shosts files
 IgnoreRhosts yes
@@ -48,10 +54,13 @@ PermitEmptyPasswords no
 
 # Change to yes to enable challenge-response passwords (beware issues with
 # some PAM modules and threads)
+# Keep this as no (Reference: http://blog.appliedinformaticsinc.com/how-to-manage-ssh-keys-using-ansible/)
 ChallengeResponseAuthentication no
 
 # Change to no to disable tunnelled clear text passwords
 #PasswordAuthentication yes
+# TODO Enable (Reference: http://blog.appliedinformaticsinc.com/how-to-manage-ssh-keys-using-ansible/)
+#PasswordAuthentication no
 
 # Kerberos options
 #KerberosAuthentication no
