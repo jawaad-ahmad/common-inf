@@ -15,9 +15,12 @@
   template: src=etc/ssh/sshd_config.j2 dest=/etc/ssh/sshd_config owner=root group=root mode=0644
   become: yes
 
-- name: Create /etc/ssh/authorized_keys directory
-  file: path=/etc/ssh/authorized_keys state=directory owner=root group=root mode=0700
-  become: yes
+# TODO Enable this when enabling AuthorizedKeysFile in sshd_config
+#- name: Create /etc/ssh/authorized_keys directory
+#  file: path=/etc/ssh/authorized_keys state=directory owner=root group=root mode=0700
+#  become: yes
+
+# TODO Restart ssh service after the changes above? (Not every time - only if changes were made)
 
 - include: pkg-install.yml package=python
 - include: pkg-install.yml package=sshfs

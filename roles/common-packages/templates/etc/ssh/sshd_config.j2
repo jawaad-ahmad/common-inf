@@ -33,12 +33,14 @@ StrictModes yes
 RSAAuthentication yes
 PubkeyAuthentication yes
 
-# Enabling AuthorizedKeysFile to prohibit individual users from having their
-# own authorized_keys file, preventing users from adding/changing their
-# respective ssh-keys and also preventing an intruder from adding their own key.
-# Reference: http://blog.appliedinformaticsinc.com/how-to-manage-ssh-keys-using-ansible/
-#AuthorizedKeysFile     %h/.ssh/authorized_keys
-AuthorizedKeysFile      /etc/ssh/authorized_keys/%u
+# TODO Enable the %u line below - need to figure out why I can't get the file
+# recognized from the new location.
+## Enabling AuthorizedKeysFile to prohibit individual users from having their
+## own authorized_keys file, preventing users from adding/changing their
+## respective ssh-keys and also preventing an intruder from adding their own key.
+## Reference: http://blog.appliedinformaticsinc.com/how-to-manage-ssh-keys-using-ansible/
+##AuthorizedKeysFile     %h/.ssh/authorized_keys
+#AuthorizedKeysFile      /etc/ssh/authorized_keys/%u
 
 # Don't read the user's ~/.rhosts and ~/.shosts files
 IgnoreRhosts yes
