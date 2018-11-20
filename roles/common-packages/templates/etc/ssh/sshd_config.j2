@@ -27,7 +27,11 @@ LogLevel INFO
 
 # Authentication:
 LoginGraceTime 120
-PermitRootLogin forced-commands-only
+# TODO Reset PermitRootLogin to forced-commands-only after resolving what to do
+# about syncoid - as-is can't lock down ssh with forced command only.
+# (https://github.com/jimsalterjrs/sanoid/issues/82)
+#PermitRootLogin forced-commands-only
+PermitRootLogin yes
 StrictModes yes
 
 RSAAuthentication yes

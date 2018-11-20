@@ -4,7 +4,12 @@
 - include: pkg-install.yml package=less
 - include: pkg-install.yml package=lsb-release
 - include: pkg-install.yml package=net-tools
+
+# Per https://askubuntu.com/questions/297560/ntpd-vs-ntpdate-pros-and-cons
+# ntpdate (for occasional use via cron) is deprecated; only use ntpd from the
+# ntp package now.
 - include: pkg-install.yml package=ntp
+
 - include: pkg-install.yml package=openssh-server
 
 - name: Install openssh-server ssh_config
@@ -28,3 +33,12 @@
 - include: pkg-install.yml package=unzip
 - include: pkg-install.yml package=vim
 
+- name: Ensure services are running
+  service:
+     name: "{{ item }}"
+     state: started
+     enabled: yes
+  with_items:
+     - ntp
+     - ssh
+  
