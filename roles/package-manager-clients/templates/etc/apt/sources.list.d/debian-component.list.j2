@@ -1,7 +1,11 @@
 # {{ ansible_banner }}
 
-deb ftp://{{ debian_mirror }}/debian jessie {{ component }}
-#deb-src ftp://{{ debian_mirror }}/debian jessie {{ component }}
+# 27-May-2019 Disabled the "deb" line below as it appears to already be
+# specified in /etc/apt/sources.list for main, non-free, and contrib
+# components on stretch netinst install from CD.
 
-#deb ftp://{{ debian_mirror }}/debian jessie-updates {{ component }}
-#deb-src ftp://{{ debian_mirror }}/debian jessie-updates {{ component }}
+#deb ftp://{{ debian_mirror }}/debian stretch {{ component }}
+#deb-src ftp://{{ debian_mirror }}/debian stretch {{ component }}
+
+#deb ftp://{{ debian_mirror }}/debian stretch-updates {{ component }}
+#deb-src ftp://{{ debian_mirror }}/debian stretch-updates {{ component }}
