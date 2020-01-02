@@ -4,7 +4,14 @@
 # specified in /etc/apt/sources.list for main, non-free, and contrib
 # components on stretch netinst install from CD.
 
-#deb ftp://{{ debian_mirror }}/debian stretch {{ component }}
+# 29-Jun-2019 Re-enabled the "deb" line below as we moved away from netinst
+# to the full three-set DVD ISO images for Virtual Box installations; the
+# netinst is being used for physical deployments via a burned CD. This means
+# we'll likely want a way to accommodate both, or perhaps at least toggle.
+# For now, need to remember to simply enable/disable the "deb" line below as
+# appropriate.
+
+deb http://{{ debian_mirror }}/debian stretch {{ component }}
 #deb-src ftp://{{ debian_mirror }}/debian stretch {{ component }}
 
 #deb ftp://{{ debian_mirror }}/debian stretch-updates {{ component }}
