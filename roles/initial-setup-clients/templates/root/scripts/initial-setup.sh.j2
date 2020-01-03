@@ -161,6 +161,7 @@ runFin() {
 
             main() {
                logE "${bf}: main not defined"
+               # TODO should this return ${EXIT_MAIN_FAILED}?
             }
 
             if [ \! -L ${f_ran_lock_file} ]; then

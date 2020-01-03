@@ -9,6 +9,13 @@
   register: command_result
   failed_when: command_result.rc == 0
 
+# TODO Add these?
+#- name: Install gnupg-agent (unmet dependency in Buster?)
+#  include: common-inf/roles/common-packages/tasks/pkg-install.yml package=gnupg-agent
+#
+#- name: Install gnupg (unmet dependency in Buster?)
+#  include: common-inf/roles/common-packages/tasks/pkg-install.yml package=gnupg
+
 - name: Run apt-get update
   apt:
      update_cache: yes
