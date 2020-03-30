@@ -7,6 +7,7 @@
 - include: pkg-install.yml package=bzip2
 - include: pkg-install.yml package=less
 - include: pkg-install.yml package=lsb-release
+- include: pkg-install.yml package=lsof
 - include: pkg-install.yml package=net-tools
 
 # Per https://askubuntu.com/questions/297560/ntpd-vs-ntpdate-pros-and-cons

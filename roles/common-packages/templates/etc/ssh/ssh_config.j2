@@ -17,9 +17,25 @@
 # list of available options, their meanings and defaults, please see the
 # ssh_config(5) man page.
 
+# (3/29/2020) Commenting out ForwardX11 for now so it's at the default "no".
+# Previously had this set to yes for X11 forwarding; however, not doing that
+# so much anymore and observed the following when running dirvish-runall:
+#
+#    Warning: No xauth data; using fake authentication data for X11 forwarding.
+#
+# Per https://www.linuxquestions.org/questions/linux-virtualization-and-cloud-90/problem-with-warning-no-xauth-data%3B-using-fake-authentication-data-for-x11-forwarding-4175614680/
+# a solution is to set the following in the client configuration:
+#
+#    XAuthLocation /usr/bin/xauth
+#    ForwardX11 yes
+#    ForwardX11Trusted yes
+#
+# This can be a Plan B if needed, but for now simply turning off ForwardX11
+# by default.
+
 Host *
    ForwardAgent no
-   ForwardX11 yes
+#   ForwardX11 no
 #   ForwardX11Trusted yes
 #   RhostsRSAAuthentication no
 #   RSAAuthentication yes
