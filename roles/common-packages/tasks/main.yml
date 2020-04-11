@@ -16,6 +16,7 @@
 - include: pkg-install.yml package=ntp
 
 - include: pkg-install.yml package=python
+- include: pkg-install.yml package=rsync
 - include: pkg-install.yml package=sudo
 - include: pkg-install.yml package=unzip
 - include: pkg-install.yml package=vim
