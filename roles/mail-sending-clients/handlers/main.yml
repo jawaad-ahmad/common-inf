@@ -1,6 +1,19 @@
 ---
 
-- name: restart postfix
+- name: Update Postfix generic lookup table
+  command: postmap /etc/postfix/generic
+  notify:
+     - Restart postfix
+  become: yes
+
+- name: Update Postfix sasl_passwd lookup table
+  command: postmap /etc/postfix/sasl_passwd
+  notify:
+     - Restart postfix
+  become: yes
+
+- name: Restart postfix
   service:
     name: postfix
     state: restarted
+  become: yes

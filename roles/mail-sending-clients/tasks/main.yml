@@ -20,27 +20,18 @@
 - name: Install postfix/sasl_passwd
   template: src=etc/postfix/sasl_passwd.j2 dest=/etc/postfix/sasl_passwd owner=root group=root mode=0600
   notify:
-     - restart postfix
+     - Update Postfix sasl_passwd lookup table
   become: yes
 
 - name: Install postfix/generic
   template: src=etc/postfix/generic.j2 dest=/etc/postfix/generic owner=root group=root mode=0644
   notify:
-     - restart postfix
-  become: yes
-
-- name: Update Postfix lookup tables
-  command: postmap /etc/postfix/{{ item }}
-  with_items:
-     - sasl_passwd
-     - generic
-  notify:
-     - restart postfix
+     - Update Postfix generic lookup table
   become: yes
 
 - name: Install postfix/main.cf
   template: src=etc/postfix/main.cf.j2 dest=/etc/postfix/main.cf owner=root group=root mode=0644
   notify:
-     - restart postfix
+     - Restart postfix
   become: yes
 

@@ -40,6 +40,9 @@
 # Finishing up
 #---
 
+# TODO split for these items as they will go to separate files eventually, and
+# then have handlers/main.yml to restart the respective service. (See the
+# mail-sending-clients role for an example.)
 - name: Ensure services are running
   service:
      name: "{{ item }}"
