@@ -34,10 +34,26 @@
 #        For IMAP: 993
 #        For POP3: 995 
 
-postfix_relay_host: mail.brighthouse.com
+#---
+# This was the previous Bright House configuration; once the Gmail config
+# below has been proven to work, we can consider cleaning up and removing
+# the Bright House configuration if we never want to go back to this.
+#---
+#postfix_relay_host: mail.brighthouse.com
+#postfix_relay_port: 587
+#
+#postfix_fantasy_mapping:
+#   jawaad:     sahmad14@cfl.rr.com
+#   sana:       sahmad14@cfl.rr.com
+#   zzzdefault: sahmad14@cfl.rr.com
+#---
+
+postfix_relay_host: smtp.gmail.com
 postfix_relay_port: 587
 
 postfix_fantasy_mapping:
-   jawaad:     sahmad14@cfl.rr.com
-   sana:       sahmad14@cfl.rr.com
-   zzzdefault: sahmad14@cfl.rr.com
+#   jawaad:     sahmad14@cfl.rr.com
+#   sana:       sahmad14@cfl.rr.com
+#   zzzdefault: sahmad14@cfl.rr.com
+   root:       no-reply@jawaad2.mooo.com
+   zzzdefault: no-reply@jawaad2.mooo.com

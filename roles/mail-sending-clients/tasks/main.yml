@@ -19,10 +19,14 @@
 
 - name: Install postfix/sasl_passwd
   template: src=etc/postfix/sasl_passwd.j2 dest=/etc/postfix/sasl_passwd owner=root group=root mode=0600
+  notify:
+     - restart postfix
   become: yes
 
 - name: Install postfix/generic
   template: src=etc/postfix/generic.j2 dest=/etc/postfix/generic owner=root group=root mode=0644
+  notify:
+     - restart postfix
   become: yes
 
 - name: Update Postfix lookup tables
@@ -30,11 +34,13 @@
   with_items:
      - sasl_passwd
      - generic
+  notify:
+     - restart postfix
   become: yes
 
 - name: Install postfix/main.cf
   template: src=etc/postfix/main.cf.j2 dest=/etc/postfix/main.cf owner=root group=root mode=0644
+  notify:
+     - restart postfix
   become: yes
-
-# TODO restart postfix
 
