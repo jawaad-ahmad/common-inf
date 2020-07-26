@@ -1,0 +1,7 @@
+{% for item in postfix_fantasy_mapping %}
+{% if item != "zzzdefault" %}
+{{ item }}@{{ ansible_fqdn }} {{ postfix_fantasy_mapping[item] }}
+{% else %}
+@{{ ansible_fqdn }}           {{ postfix_fantasy_mapping[item] }}
+{% endif %}
+{% endfor %}

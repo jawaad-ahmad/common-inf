@@ -1,0 +1,43 @@
+---
+
+# Postfix configuration for Bright House e-mail servers:
+#
+# References:
+#
+#    - http://support.brighthouse.com/Article/Incoming-Outgoing-Email-Server-Address-RR-1595/
+#    - https://imbuzu.wordpress.com/2012/04/19/set-up-postfix-to-solve-blocked-port-25-issue-and-send-emails-from-localhost/
+#    - http://www.postfix.org/SOHO_README.html
+#
+# Incoming Mail Server:
+#
+#    Host Name or incoming mail server
+#       For IMAP: mail.brighthouse.com
+#       For POP3: mail.brighthouse.com 
+#    User Name: Your Bright House Email address
+#    Password: Your Bright House Email password 
+#
+# Outgoing Mail Server:
+#
+#    SMTP: mail.brighthouse.com
+#    Outgoing Server Port
+#       For IMAP: 587
+#       For POP3: 587 
+#
+# Incoming Settings
+#
+#     Use SSL
+#        For IMAP: On
+#        For POP3: Off 
+#     Authentication: Password
+#     Delete From Server: Your choice
+#     Incoming Server Port
+#        For IMAP: 993
+#        For POP3: 995 
+
+postfix_relay_host: mail.brighthouse.com
+postfix_relay_port: 587
+
+postfix_fantasy_mapping:
+   jawaad:     sahmad14@cfl.rr.com
+   sana:       sahmad14@cfl.rr.com
+   zzzdefault: sahmad14@cfl.rr.com

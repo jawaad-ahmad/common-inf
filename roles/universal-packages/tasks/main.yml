@@ -1,0 +1,18 @@
+---
+
+#---
+# Install miscellaneous standard packages
+#---
+
+- include: common-inf/roles/common-packages/tasks/pkg-install.yml package=bzip2
+- include: common-inf/roles/common-packages/tasks/pkg-install.yml package=curl
+- include: common-inf/roles/common-packages/tasks/pkg-install.yml package=less
+- include: common-inf/roles/common-packages/tasks/pkg-install.yml package=lsb-release
+- include: common-inf/roles/common-packages/tasks/pkg-install.yml package=lsof
+- include: common-inf/roles/common-packages/tasks/pkg-install.yml package=net-tools
+- include: common-inf/roles/common-packages/tasks/pkg-install.yml package=python
+- include: common-inf/roles/common-packages/tasks/pkg-install.yml package=rsync
+- include: common-inf/roles/common-packages/tasks/pkg-install.yml package=sudo
+- include: common-inf/roles/common-packages/tasks/pkg-install.yml package=unzip
+- include: common-inf/roles/common-packages/tasks/pkg-install.yml package=vim
+

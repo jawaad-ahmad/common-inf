@@ -1,8 +1,16 @@
 ---
 
+# Do not run these on Raspbian (arm), but we do want `apt-get update` below.
+
 - include: setup-apt-sources-list.yml component=main
+  when: ansible_architecture == "x86_64"
+
 - include: setup-apt-sources-list.yml component=non-free
+  when: ansible_architecture == "x86_64"
+
 - include: setup-apt-sources-list.yml component=contrib
+  when: ansible_architecture == "x86_64"
+
 
 - name: Verify cdrom line disabled in /etc/apt/sources.list
   command: /bin/grep -q '^[^#].*cdrom' /etc/apt/sources.list

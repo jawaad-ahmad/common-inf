@@ -4,23 +4,13 @@
 # Install miscellaneous standard packages
 #---
 
-- include: pkg-install.yml package=bzip2
-- include: pkg-install.yml package=less
-- include: pkg-install.yml package=lsb-release
-- include: pkg-install.yml package=lsof
-- include: pkg-install.yml package=net-tools
-
 # Per https://askubuntu.com/questions/297560/ntpd-vs-ntpdate-pros-and-cons
 # ntpdate (for occasional use via cron) is deprecated; only use ntpd from the
 # ntp package now.
+# (7/26/2020) Newer versions of Raspberry Pi OS and other Debian distros might
+# also be coming out with systemd-timesyncd as a client-only solution for NTP.
+# Let's start leaving ntp out of Raspberry Pi installations for now.
 - include: pkg-install.yml package=ntp
-
-- include: pkg-install.yml package=python
-- include: pkg-install.yml package=rsync
-- include: pkg-install.yml package=sudo
-- include: pkg-install.yml package=unzip
-- include: pkg-install.yml package=vim
-
 
 #---
 # Install SSH server
@@ -44,45 +34,6 @@
 # TODO Restart ssh service after the changes above? (Not every time - only if changes were made)
 
 - include: pkg-install.yml package=sshfs
-
-
-#---
-# Install Postfix to send outgoing mail
-#---
-
-# Note: Debian Stretch appears to have a problem installing postfix only--mail
-# was not being sent with the following messages in /var/log/mail:
-#
-#     Jul  4 23:01:23 hostname postfix/qmgr[11815]: XXXXXXXXXX: from=<user@host>, size=384, nrcpt=1 (queue active)
-#     Jul  4 23:01:25 hostname postfix/smtp[11964]: warning: SASL authentication failure: No worthy mechs found
-#     Jul  4 23:01:25 hostname postfix/smtp[11964]: XXXXXXXXXX: ... status=deferred (SASL authentication failed; cannot authenticate to server ...: no mechanism available)
-#
-# Installing libsasl2-modules manually seems to have helped.
-
-- include: pkg-install.yml package=mailutils
-- include: pkg-install.yml package=postfix
-- include: pkg-install.yml package=libsasl2-modules
-
-- name: Install postfix/sasl_passwd
-  template: src=etc/postfix/sasl_passwd.j2 dest=/etc/postfix/sasl_passwd owner=root group=root mode=0600
-  become: yes
-
-- name: Install postfix/generic
-  template: src=etc/postfix/generic.j2 dest=/etc/postfix/generic owner=root group=root mode=0644
-  become: yes
-
-- name: Update Postfix lookup tables
-  command: postmap /etc/postfix/{{ item }}
-  with_items:
-     - sasl_passwd
-     - generic
-  become: yes
-
-- name: Install postfix/main.cf
-  template: src=etc/postfix/main.cf.j2 dest=/etc/postfix/main.cf owner=root group=root mode=0644
-  become: yes
-
-# TODO restart postfix
 
 
 #---
