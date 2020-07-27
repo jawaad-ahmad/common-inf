@@ -35,3 +35,20 @@
      - Restart postfix
   become: yes
 
+- name: Install /etc/issue
+  blockinfile:
+    path: /etc/issue
+    block: |
+       :
+       : * eth0: \4{eth0}
+       : * wlan0: \4{wlan0}
+       :
+    marker: "+--- {mark} IP Addresses ---"
+    marker_begin: Here is the list of
+    marker_end: Completed listing
+  become: yes
+  tags: debug
+
+- name: Install /etc/rc.local
+  template: src=etc/rc.local.j2 dest=/etc/rc.local owner=root group=root mode=0755
+  become: yes
