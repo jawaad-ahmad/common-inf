@@ -1,4 +1,5 @@
 ---
+# Setup apt sources.list and run apt-get update
 
 # Do not run these on Raspbian (arm), but we do want `apt-get update` below.
 

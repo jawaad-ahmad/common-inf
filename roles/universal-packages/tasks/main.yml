@@ -1,8 +1,5 @@
 ---
-
-#---
 # Install miscellaneous standard packages
-#---
 
 - include: common-inf/roles/common-packages/tasks/pkg-install.yml package=bzip2
 - include: common-inf/roles/common-packages/tasks/pkg-install.yml package=curl

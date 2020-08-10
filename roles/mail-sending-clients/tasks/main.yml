@@ -1,8 +1,5 @@
 ---
-
-#---
-# Install Postfix to send outgoing mail
-#---
+# Install/configure Postfix to send outgoing mail
 
 # Note: Debian Stretch appears to have a problem installing postfix only--mail
 # was not being sent with the following messages in /var/log/mail:
@@ -35,20 +32,23 @@
      - Restart postfix
   become: yes
 
+# TODO This really doesn't belong here; need to find a better home for this
+# TODO Also compare against the common-inf/roles/console-login-ip-addr role because they both appear to do something similar; this one has been tested last on hundley/jumpy and it works whereas the console-login-ip-addr is older. Might want to salvage what we need from there and incorporate this over there.
 - name: Install /etc/issue
   blockinfile:
     path: /etc/issue
     block: |
        :
        : * eth0: \4{eth0}
+       : * enp0s3: \4{enp0s3}
        : * wlan0: \4{wlan0}
        :
     marker: "+--- {mark} IP Addresses ---"
     marker_begin: Here is the list of
     marker_end: Completed listing
   become: yes
-  tags: debug
 
+# TODO why? looks like it is e-mailing the IP address at boot-up, but what happens when another role wants to add something else to rc.local?
 - name: Install /etc/rc.local
   template: src=etc/rc.local.j2 dest=/etc/rc.local owner=root group=root mode=0755
   become: yes

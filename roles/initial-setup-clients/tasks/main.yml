@@ -1,4 +1,5 @@
 ---
+# Set up initial-setup structure for other roles took install hook scripts
 
 # Install one-time init scripts. Set to mode 444 so they can't be accidentally
 # executed.

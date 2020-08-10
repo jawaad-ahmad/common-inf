@@ -1,4 +1,5 @@
 ---
+# Set up /etc/skel, adduser.conf, and create user accounts
 
 # TODO The initial ansible user's home directory is set as 0755. Need
 # this changed to 0700 somewhere.
