@@ -6,6 +6,7 @@
 - include: common-inf/roles/common-packages/tasks/pkg-install.yml package=less
 - include: common-inf/roles/common-packages/tasks/pkg-install.yml package=lsb-release
 - include: common-inf/roles/common-packages/tasks/pkg-install.yml package=lsof
+- include: common-inf/roles/common-packages/tasks/pkg-install.yml package=man
 - include: common-inf/roles/common-packages/tasks/pkg-install.yml package=net-tools
 - include: common-inf/roles/common-packages/tasks/pkg-install.yml package=python
 - include: common-inf/roles/common-packages/tasks/pkg-install.yml package=rsync
