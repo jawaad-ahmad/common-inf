@@ -15,6 +15,7 @@
 
 - name: Verify cdrom line disabled in /etc/apt/sources.list
   command: /bin/grep -q '^[^#].*cdrom' /etc/apt/sources.list
+  changed_when: False
   register: command_result
   failed_when: command_result.rc == 0
 
