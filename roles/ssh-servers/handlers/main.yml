@@ -1,0 +1,9 @@
+---
+
+- name: Ensure ssh server restarted
+  service:
+     name: ssh
+     state: started
+     enabled: yes
+  become: yes
+

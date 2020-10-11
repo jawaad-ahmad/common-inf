@@ -1,0 +1,16 @@
+---
+
+#---
+# Install NTP client
+#---
+
+# Per https://askubuntu.com/questions/297560/ntpd-vs-ntpdate-pros-and-cons
+# ntpdate (for occasional use via cron) is deprecated; only use ntpd from the
+# ntp package now.
+# (7/26/2020) Newer versions of Raspberry Pi OS and other Debian distros might
+# also be coming out with systemd-timesyncd as a client-only solution for NTP.
+# Let's start leaving ntp out of Raspberry Pi installations for now.
+- include: common-inf/roles/common-packages/tasks/pkg-install.yml package=ntp
+  notify:
+     - Ensure ntp client started
+

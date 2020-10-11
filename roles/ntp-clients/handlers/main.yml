@@ -1,0 +1,9 @@
+---
+
+- name: Ensure ntp client started
+  service:
+     name: ntp
+     state: started
+     enabled: yes
+  become: yes
+
