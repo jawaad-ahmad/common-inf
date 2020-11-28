@@ -23,5 +23,3 @@
 #  file: path=/etc/ssh/authorized_keys state=directory owner=root group=root mode=0700
 #  become: yes
 
-- include: common-inf/roles/common-packages/tasks/pkg-install.yml package=sshfs
-  
