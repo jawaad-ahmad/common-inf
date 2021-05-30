@@ -1,16 +1,125 @@
 ---
 
-- name: Update Postfix generic lookup table
-  command: postmap /etc/postfix/generic
-  notify:
-     - Restart postfix
-  become: yes
+#---
+# Update sasl_passwd lookup table
+#---
 
 - name: Update Postfix sasl_passwd lookup table
   command: postmap /etc/postfix/sasl_passwd
   notify:
+     - Verify Postfix sasl_passwd lookup table updated
+  become: yes
+
+- name: Verify Postfix sasl_passwd lookup table updated
+  command: /bin/true
+  check_mode: no
+  notify:
+     - Get sasl_passwd stat
+     - Get sasl_passwd_db stat
+  become: yes
+
+- name: Get sasl_passwd stat
+  stat:
+    path: /etc/postfix/sasl_passwd
+  register: postfix_sasl_passwd_file
+  notify:
+     - Get sasl_passwd mod time
+  changed_when: true
+  become: yes
+
+- name: Get sasl_passwd mod time
+  set_fact:
+    postfix_sasl_passwd_mod_time: "{{ postfix_sasl_passwd_file.stat.mtime|int }}"
+  notify:
+     - Compare sasl_passwd and lookup table mod times
+  become: yes
+
+- name: Get sasl_passwd_db stat
+  stat:
+    path: /etc/postfix/sasl_passwd.db
+  register: postfix_sasl_passwd_db_file
+  notify:
+     - Get sasl_passwd_db mod time
+  changed_when: true
+  become: yes
+
+- name: Get sasl_passwd_db mod time
+  set_fact:
+    postfix_sasl_passwd_db_mod_time: "{{ postfix_sasl_passwd_db_file.stat.mtime|int }}"
+  notify:
+     - Compare sasl_passwd and lookup table mod times
+  become: yes
+
+- name: Compare sasl_passwd and lookup table mod times
+  command: /bin/true
+  check_mode: no
+  failed_when: postfix_sasl_passwd_db_mod_time < postfix_sasl_passwd_mod_time
+  notify:
      - Restart postfix
   become: yes
+
+#---
+# Update generic lookup table
+#---
+
+- name: Update Postfix generic lookup table
+  command: postmap /etc/postfix/generic
+  notify:
+     - Verify Postfix generic lookup table updated
+  become: yes
+
+- name: Verify Postfix generic lookup table updated
+  command: /bin/true
+  check_mode: no
+  notify:
+     - Get generic stat
+     - Get generic_db stat
+  become: yes
+
+- name: Get generic stat
+  stat:
+    path: /etc/postfix/generic
+  register: postfix_generic_file
+  notify:
+     - Get generic mod time
+  changed_when: true
+  become: yes
+
+- name: Get generic mod time
+  set_fact:
+    postfix_generic_mod_time: "{{ postfix_generic_file.stat.mtime|int }}"
+  notify:
+     - Compare generic and lookup table mod times
+  become: yes
+
+- name: Get generic_db stat
+  stat:
+    path: /etc/postfix/generic.db
+  register: postfix_generic_db_file
+  notify:
+     - Get generic_db mod time
+  changed_when: true
+  become: yes
+
+- name: Get generic_db mod time
+  set_fact:
+    postfix_generic_db_mod_time: "{{ postfix_generic_db_file.stat.mtime|int }}"
+  notify:
+     - Compare generic and lookup table mod times
+  become: yes
+
+- name: Compare generic and lookup table mod times
+  command: /bin/true
+  check_mode: no
+  failed_when: postfix_generic_db_mod_time < postfix_generic_mod_time
+  notify:
+     - Restart postfix
+  become: yes
+
+
+#---
+# Finally...
+#---
 
 - name: Restart postfix
   service:

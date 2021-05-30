@@ -20,10 +20,24 @@
      - Update Postfix sasl_passwd lookup table
   become: yes
 
+- name: Verify Postfix sasl_passwd lookup table up-to-date
+  command: /bin/true
+  check_mode: no
+  notify:
+     - Verify Postfix sasl_passwd lookup table updated
+  become: yes
+
 - name: Install postfix/generic
   template: src=etc/postfix/generic.j2 dest=/etc/postfix/generic owner=root group=root mode=0644
   notify:
      - Update Postfix generic lookup table
+  become: yes
+
+- name: Verify postfix/generic lookup table up-to-date
+  command: /bin/true
+  check_mode: no
+  notify:
+     - Verify Postfix generic lookup table updated
   become: yes
 
 - name: Install postfix/main.cf
