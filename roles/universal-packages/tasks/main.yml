@@ -8,9 +8,29 @@
 - include: common-inf/roles/common-packages/tasks/pkg-install.yml package=lsof
 - include: common-inf/roles/common-packages/tasks/pkg-install.yml package=man
 - include: common-inf/roles/common-packages/tasks/pkg-install.yml package=net-tools
-- include: common-inf/roles/common-packages/tasks/pkg-install.yml package=python
 - include: common-inf/roles/common-packages/tasks/pkg-install.yml package=rsync
 - include: common-inf/roles/common-packages/tasks/pkg-install.yml package=sudo
 - include: common-inf/roles/common-packages/tasks/pkg-install.yml package=unzip
 - include: common-inf/roles/common-packages/tasks/pkg-install.yml package=vim
+
+#---
+# Python 2.7
+#---
+
+# TODO Remove Python 2.7 eventually?
+- include: common-inf/roles/common-packages/tasks/pkg-install.yml package=python
+- include: common-inf/roles/common-packages/tasks/pkg-install.yml package=python-pip
+
+- name: Install virtualenv
+  pip:
+    name: virtualenv
+  become: yes
+
+#---
+# Python 3
+#---
+
+- include: common-inf/roles/common-packages/tasks/pkg-install.yml package=python3
+- include: common-inf/roles/common-packages/tasks/pkg-install.yml package=python3-pip
+- include: common-inf/roles/common-packages/tasks/pkg-install.yml package=python3-venv
 
