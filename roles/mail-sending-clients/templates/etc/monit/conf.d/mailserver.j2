@@ -1,0 +1,8 @@
+# {{ ansible_banner }}
+#
+# From https://mmonit.com/wiki/Monit/Gmail
+
+set mailserver {{ postfix_relay_host }} port {{ postfix_relay_port}}
+    username "{{ postfix_sasl_username }}" password "{{ postfix_sasl_passwd }}"
+    using tls
+

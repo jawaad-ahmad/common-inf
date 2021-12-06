@@ -1,0 +1,24 @@
+---
+
+# Mapping of who exercises a periodic ssh connection test against whom.
+
+monit_remote_ssh_test:
+   jumpyd.docker:
+      hundley: 172.17.0.2
+
+   hundleyd.docker:
+      jumpy: 172.17.0.3
+
+# TODO enable:
+#   jumpy:
+#      hundley: hundley
+#
+#   hundley:
+#      jumpy: jumpy
+#      charkie: charkie
+#      cottontail: cottontail
+#      george: george
+#      herbertnenninger: george
+#
+#   cottontail:
+#      hundley: hundley

@@ -1,0 +1,7 @@
+# {{ ansible_banner }}
+#
+# Override the directive in /etc/monitrc pointing to a direct /var/log
+# file. The files in /etc/conf.d are included at the end of /etc/monitrc,
+# so this set directive will come after.
+
+set logfile syslog

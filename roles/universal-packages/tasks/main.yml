@@ -1,13 +1,21 @@
 ---
 # Install miscellaneous standard packages
 
+- include: common-inf/roles/common-packages/tasks/pkg-install.yml package=curl
+- include: common-inf/roles/common-packages/tasks/pkg-install.yml package=dnsutils
 - include: common-inf/roles/common-packages/tasks/pkg-install.yml package=bzip2
+
 - include: common-inf/roles/common-packages/tasks/pkg-install.yml package=curl
 - include: common-inf/roles/common-packages/tasks/pkg-install.yml package=dnsutils
 - include: common-inf/roles/common-packages/tasks/pkg-install.yml package=less
 - include: common-inf/roles/common-packages/tasks/pkg-install.yml package=lsb-release
 - include: common-inf/roles/common-packages/tasks/pkg-install.yml package=lsof
 - include: common-inf/roles/common-packages/tasks/pkg-install.yml package=man
+
+- include: common-inf/roles/common-packages/tasks/pkg-install.yml package=monit
+  # TODO Remove tags
+  tags: monit
+
 - include: common-inf/roles/common-packages/tasks/pkg-install.yml package=net-tools
 - include: common-inf/roles/common-packages/tasks/pkg-install.yml package=netcat
 - include: common-inf/roles/common-packages/tasks/pkg-install.yml package=rsync
@@ -16,18 +24,80 @@
 - include: common-inf/roles/common-packages/tasks/pkg-install.yml package=unzip
 - include: common-inf/roles/common-packages/tasks/pkg-install.yml package=vim
 
+
 #---
-# Python 2.7
+# monit Configuration
 #---
 
-# TODO Remove Python 2.7 eventually?
-- include: common-inf/roles/common-packages/tasks/pkg-install.yml package=python
-- include: common-inf/roles/common-packages/tasks/pkg-install.yml package=python-pip
+- include: common-inf/roles/common-packages/tasks/pkg-install.yml package=acpid
+  # TODO Remove tags
+  tags: monit
 
-- name: Install virtualenv
-  pip:
-    name: virtualenv
+- name: Install monit acpid configuration
+  file: src=../conf-available/acpid dest=/etc/monit/conf-enabled/acpid owner=root group=root state=link
+  notify:
+     - Restart monit
   become: yes
+  # TODO Remove tags
+  tags: monit
+
+# Expecting cron is already installed, so just want to install monit
+# configuration for it.
+
+- name: Install monit cron configuration
+  file: src=../conf-available/cron dest=/etc/monit/conf-enabled/cron owner=root group=root state=link
+  notify:
+     - Restart monit
+  become: yes
+  # TODO Remove tags
+  tags: monit
+
+- name: Install monit syslog logging
+  template: src=etc/monit/conf.d/monit-syslog-logging.j2 dest=/etc/monit/conf.d/monit-syslog-logging owner=root group=root mode=0644
+  notify:
+     - Restart monit
+  become: yes
+  # TODO Remove tags
+  tags: monit
+
+# Expecting openssh-server is already installed, so just want to install monit
+# configuration for it.
+
+# 12/5/2021 Can't do this anymore as exercised on marco; the new sshd setup
+# with Debian 11 apparently doesn't generate the ssh_host_dsa_key in /etc/ssh
+# but the stock monit conf expects this; will need to copy our own here till
+# this catches up.
+- name: "Install monit openssh-server configuration"
+#  file: src=../conf-available/openssh-server dest=/etc/monit/conf-enabled/openssh-server owner=root group=root state=link
+  file: src=../conf-available/openssh-server dest=/etc/monit/conf-enabled/openssh-server owner=root group=root state=absent
+  notify:
+     - Restart monit
+  become: yes
+  # TODO Remove tags
+  tags: monit
+
+- name: "Install monit openssh-server configuration 2"
+  template: src=etc/monit/conf.d/openssh-service-no-dsa-key.j2 dest=/etc/monit/conf.d/openssh-service-no-dsa-key owner=root group=root mode=0644
+  notify:
+     - Restart monit
+  become: yes
+  # TODO Remove tags
+  tags: monit
+
+# (12/5/2021) Getting rid of Python 2 for marco install; let's see how this
+# works out.
+##---
+## Python 2.7
+##---
+#
+## TODO Remove Python 2.7 eventually?
+#- include: common-inf/roles/common-packages/tasks/pkg-install.yml package=python
+#- include: common-inf/roles/common-packages/tasks/pkg-install.yml package=python-pip
+#
+#- name: Install virtualenv
+#  pip:
+#    name: virtualenv
+#  become: yes
 
 #---
 # Python 3

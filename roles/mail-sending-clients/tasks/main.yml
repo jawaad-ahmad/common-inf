@@ -11,14 +11,28 @@
 # Installing libsasl2-modules manually helped get past this.
 
 - include: common-inf/roles/common-packages/tasks/pkg-install.yml package=mailutils
+  # TODO Remove tags
+  tags: monit
+
 - include: common-inf/roles/common-packages/tasks/pkg-install.yml package=postfix
+  # TODO Remove tags
+  tags: monit
+
+- include: common-inf/roles/common-packages/tasks/pkg-install.yml package=ca-certificates
+  # TODO Remove tags
+  tags: monit
+
 - include: common-inf/roles/common-packages/tasks/pkg-install.yml package=libsasl2-modules
+  # TODO Remove tags
+  tags: monit
 
 - name: Install postfix/sasl_passwd
   template: src=etc/postfix/sasl_passwd.j2 dest=/etc/postfix/sasl_passwd owner=root group=root mode=0600
   notify:
      - Update Postfix sasl_passwd lookup table
   become: yes
+  # TODO Remove tags
+  tags: monit
 
 - name: Verify Postfix sasl_passwd lookup table up-to-date
   command: /bin/true
@@ -26,12 +40,16 @@
   notify:
      - Verify Postfix sasl_passwd lookup table updated
   become: yes
+  # TODO Remove tags
+  tags: monit
 
 - name: Install postfix/generic
   template: src=etc/postfix/generic.j2 dest=/etc/postfix/generic owner=root group=root mode=0644
   notify:
      - Update Postfix generic lookup table
   become: yes
+  # TODO Remove tags
+  tags: monit
 
 - name: Verify postfix/generic lookup table up-to-date
   command: /bin/true
@@ -39,12 +57,33 @@
   notify:
      - Verify Postfix generic lookup table updated
   become: yes
+  # TODO Remove tags
+  tags: monit
 
 - name: Install postfix/main.cf
   template: src=etc/postfix/main.cf.j2 dest=/etc/postfix/main.cf owner=root group=root mode=0644
   notify:
      - Restart postfix
   become: yes
+  # TODO Remove tags
+  tags: monit
+
+- name: Install monit mailserver configuration
+  # setting mode to 0600 since this contains the gmail password
+  template: src=etc/monit/conf.d/mailserver.j2 dest=/etc/monit/conf.d/mailserver owner=root group=root mode=0600
+  notify:
+     - Restart monit
+  become: yes
+  # TODO Remove tags
+  tags: monit
+
+- name: Install monit mailformat configuration
+  template: src=etc/monit/conf.d/mailformat.j2 dest=/etc/monit/conf.d/mailformat owner=root group=root mode=0644
+  notify:
+     - Restart monit
+  become: yes
+  # TODO Remove tags
+  tags: monit
 
 # TODO This really doesn't belong here; need to find a better home for this
 # TODO Also compare against the common-inf/roles/console-login-ip-addr role because they both appear to do something similar; this one has been tested last on hundley/jumpy and it works whereas the console-login-ip-addr is older. Might want to salvage what we need from there and incorporate this over there.
@@ -62,7 +101,13 @@
     marker_end: Completed listing
   become: yes
 
+# TODO set up monit to monitor /etc/issue to ensure the right IP address is in there???
+# TODO remove tags
+#  tags: monit
+
 # TODO why? looks like it is e-mailing the IP address at boot-up, but what happens when another role wants to add something else to rc.local?
 - name: Install /etc/rc.local
   template: src=etc/rc.local.j2 dest=/etc/rc.local owner=root group=root mode=0755
   become: yes
+  # TODO Remove tags
+  tags: monit

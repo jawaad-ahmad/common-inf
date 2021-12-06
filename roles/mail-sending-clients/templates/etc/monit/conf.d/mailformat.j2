@@ -1,0 +1,26 @@
+# {{ ansible_banner }}
+#
+# From https://www.elitmus.com/blog/technology/using-monit-to-get-email-alert-on-unauthorized-login/
+
+set mail-format {
+   from:    Monit <monit@$HOST>
+   subject: $HOST: monit alert: $EVENT $SERVICE
+   message: Event $EVENT encountered for service $SERVICE
+
+                 Date:        $DATE
+                 Action:      $ACTION
+                 Host:        $HOST
+                 Description: (See logs.)
+
+            Your faithful employee,
+            Monit
+}
+
+
+# Alerts can be triggered for various reasons. Successful ssh login is just one
+# of those reasons. Since this is a global configuration, we can tell monit to
+# not send alerts for certain events. We also specify the email address of the
+# recepient who will receive the alerts
+
+# TODO This email address as well as the tmomail email address are sprinkled through various files; need to consolidate these into a single spot.
+set alert jawaad.ahmad@gmail.com NOT ON { action, instance, pid, ppid, nonexist }

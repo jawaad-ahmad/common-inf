@@ -1,5 +1,11 @@
 ---
 
-- name: Install {{ package }} package
-  action: "{{ ansible_pkg_mgr }} name={{ package }} state=present"
+- name: "Install {{ package }} package"
+  # TODO Not sure what broke here when installing on marco on 12/5/2021; will
+  # need to revisit next time we try this somewhere that doesn't have apt, but
+  # for now disabling and hard-coding apt to work around.
+  #action: "{{ ansible_pkg_mgr }} name={{ package }} state=present"
+  apt:
+    name: "{{ package }}"
+    state: present
   become: yes

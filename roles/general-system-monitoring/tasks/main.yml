@@ -1,0 +1,11 @@
+---
+# Install monit configuation for general system monitoring
+
+- name: Install monit syslog logging
+  template: src=etc/monit/conf.d/system.j2 dest=/etc/monit/conf.d/system owner=root group=root mode=0644
+  notify:
+     - Restart monit
+  become: yes
+  # TODO Remove tags
+  tags: monit
+
