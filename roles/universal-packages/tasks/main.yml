@@ -67,16 +67,16 @@
 # with Debian 11 apparently doesn't generate the ssh_host_dsa_key in /etc/ssh
 # but the stock monit conf expects this; will need to copy our own here till
 # this catches up.
-- name: "Install monit openssh-server configuration"
+- name: "Install monit openssh-server configuration (deprecation: removing old conf-enabled symlink)"
 #  file: src=../conf-available/openssh-server dest=/etc/monit/conf-enabled/openssh-server owner=root group=root state=link
-  file: src=../conf-available/openssh-server dest=/etc/monit/conf-enabled/openssh-server owner=root group=root state=absent
+  file: dest=/etc/monit/conf-enabled/openssh-server owner=root group=root state=absent
   notify:
      - Restart monit
   become: yes
   # TODO Remove tags
   tags: monit
 
-- name: "Install monit openssh-server configuration 2"
+- name: "Install monit openssh-server configuration"
   template: src=etc/monit/conf.d/openssh-service-no-dsa-key.j2 dest=/etc/monit/conf.d/openssh-service-no-dsa-key owner=root group=root mode=0644
   notify:
      - Restart monit
