@@ -115,7 +115,13 @@ END_OF_FILE
 make_resolv_conf() {
    logger 'pre-up.d: Getting wireless network name'
 
-   ssid="$(/sbin/iwconfig wlan0 | grep --only-matching 'ESSID\:\"[^"]*\"' | cut --delimiter=\" --fields=2)"
+   # Previously ran iwconfig wlan0 here, but that caused problems since wlan0
+   # then became wlp1s0 and we needed this script to run on both old and new
+   # hosts, so updated this to run just iwconfig to get all hosts now with the
+   # limitation that we assume only one wireless network interface is connected
+   # to an ESSID at any one time; otherwise, the command will return multiple
+   # ESSIDs.
+   ssid="$(/sbin/iwconfig | grep --only-matching 'ESSID\:\"[^"]*\"' | cut --delimiter=\" --fields=2)"
 
    if [ -n "${ssid}" ]; then
       logger "pre-up.d: Wireless network SSID=${ssid}"
