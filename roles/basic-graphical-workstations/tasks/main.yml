@@ -11,3 +11,7 @@
 #- include: ../../common-packages/tasks/pkg-install.yml package=task-gnome-desktop
 - include: ../../common-packages/tasks/pkg-install.yml package=task-mate-desktop
 
+# Add blue light filter software (still needs to be configured per-user)
+- include: ../../common-packages/tasks/pkg-install.yml package=redshift
+- include: ../../common-packages/tasks/pkg-install.yml package=redshift-gtk
+
