@@ -6,12 +6,6 @@
 
 - include: common-inf/roles/common-packages/tasks/pkg-install.yml package=openssh-server
 
-- name: Install openssh-server ssh_config
-  template: src=etc/ssh/ssh_config.j2 dest=/etc/ssh/ssh_config owner=root group=root mode=0644
-  notify:
-     - Ensure ssh server restarted
-  become: yes
-
 - name: Install openssh-server sshd_config
   template: src=etc/ssh/sshd_config.j2 dest=/etc/ssh/sshd_config owner=root group=root mode=0644
   notify:
